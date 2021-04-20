@@ -9,6 +9,11 @@ namespace database_monitoring.Data {
             throw new System.NotImplementedException();
         }
 
+        public void DeleteDatabaseServer(DatabaseServer dbServer)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public IEnumerable<DatabaseServer> GetAllDatabaseServers()
         {
             var DatabaseServers = new List<DatabaseServer> {
@@ -26,6 +31,11 @@ namespace database_monitoring.Data {
         }
 
         public bool SaveChanges()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void UpdateDatabaseServer(DatabaseServer dvServer)
         {
             throw new System.NotImplementedException();
         }

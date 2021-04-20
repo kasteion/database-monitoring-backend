@@ -11,5 +11,9 @@ namespace database_monitoring.Data {
         DatabaseServer GetDatabaseServerById(int id);
 
         void CreateDatabaseServer(DatabaseServer dbserver);
+
+        void UpdateDatabaseServer(DatabaseServer dbServer);
+
+        void DeleteDatabaseServer(DatabaseServer dbServer);
     }   
 }

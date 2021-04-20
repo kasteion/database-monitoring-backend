@@ -21,6 +21,14 @@ namespace database_monitoring.Data {
             _context.DatabaseServers.Add(dbserver);
         }
 
+        public void DeleteDatabaseServer(DatabaseServer dbServer)
+        {
+            if (dbServer == null){
+                throw new ArgumentNullException(nameof(dbServer));
+            }
+            _context.DatabaseServers.Remove(dbServer);
+        }
+
         public IEnumerable<DatabaseServer> GetAllDatabaseServers()
         {
             return _context.DatabaseServers.ToList();
@@ -34,6 +42,10 @@ namespace database_monitoring.Data {
         public bool SaveChanges()
         {
             return (_context.SaveChanges() >= 0);
+        }
+
+        public void UpdateDatabaseServer(DatabaseServer dvServer)
+        {
         }
     }
 }

@@ -3,6 +3,7 @@ using AutoMapper;
 using database_monitoring.Data;
 using database_monitoring.Dtos;
 using database_monitoring.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace database_monitoring.Controllers {
@@ -43,6 +44,48 @@ namespace database_monitoring.Controllers {
             _repository.SaveChanges();
             var dbServerReadDto = _mapper.Map<DatabaseServerReadDto>(dbServerModel);
             return CreatedAtRoute(nameof(GetDatabaseServerById), new { Id = dbServerReadDto.Id}, dbServerReadDto);
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult UpdateDatabaseServer(int id, DatabaseServerUpdateDto dbServer){
+            var dbServerFromRepo = _repository.GetDatabaseServerById(id);
+            if (dbServerFromRepo == null){
+                return NotFound();
+            }
+            _mapper.Map(dbServer, dbServerFromRepo);
+            _repository.UpdateDatabaseServer(dbServerFromRepo);
+            _repository.SaveChanges();
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public ActionResult PartialUpdateDatabaseServer(int id, JsonPatchDocument<DatabaseServerUpdateDto> patchDoc){
+            var dbServerFromRepo = _repository.GetDatabaseServerById(id);
+            if (dbServerFromRepo == null){
+                return NotFound();
+            }
+
+            var dbServerToPatch = _mapper.Map<DatabaseServerUpdateDto>(dbServerFromRepo);
+            patchDoc.ApplyTo(dbServerToPatch, ModelState);
+            if(!TryValidateModel(dbServerToPatch)){
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(dbServerToPatch, dbServerFromRepo);
+            _repository.UpdateDatabaseServer(dbServerFromRepo);
+            _repository.SaveChanges();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteDatabaseServer(int id){
+            var dbServerFromRepo = _repository.GetDatabaseServerById(id);
+            if (dbServerFromRepo == null){
+                return NotFound();
+            }
+            _repository.DeleteDatabaseServer(dbServerFromRepo);
+            _repository.SaveChanges();
+            return NoContent();
         }
     }
 }

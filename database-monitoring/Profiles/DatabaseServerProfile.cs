@@ -8,6 +8,8 @@ namespace database_monitoring.Profiles {
         {
             CreateMap<DatabaseServer, DatabaseServerReadDto>();
             CreateMap<DatabaseServerCreateDto, DatabaseServer>();
+            CreateMap<DatabaseServerUpdateDto, DatabaseServer>();
+            CreateMap<DatabaseServer, DatabaseServerUpdateDto>();
         }
     }
 }

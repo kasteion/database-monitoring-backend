@@ -30,6 +30,7 @@ namespace database_monitoring
             services.AddDbContext<DatabaseServerContext>(opt => opt.UseSqlServer
                 (Configuration.GetConnectionString("DatabaseConnection")));
             services.AddControllers();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             //services.AddScoped<IDatabaseServerRepo, MockDatabaseServerRepo>();
             services.AddScoped<IDatabaseServerRepo, SqlDatabaseServerRepo>();
         }

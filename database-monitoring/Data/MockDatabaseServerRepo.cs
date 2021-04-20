@@ -4,6 +4,11 @@ using database_monitoring.Models;
 namespace database_monitoring.Data {
     public class MockDatabaseServerRepo : IDatabaseServerRepo
     {
+        public void CreateDatabaseServer(DatabaseServer dbserver)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public IEnumerable<DatabaseServer> GetAllDatabaseServers()
         {
             var DatabaseServers = new List<DatabaseServer> {
@@ -18,6 +23,11 @@ namespace database_monitoring.Data {
         {
             var DatabaseServer = new DatabaseServer { Id = id, ServerName="SuperServer", DatabaseVersion="Best Database In The World Ultimate Edition"};
             return DatabaseServer;
+        }
+
+        public bool SaveChanges()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

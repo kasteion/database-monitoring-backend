@@ -33,6 +33,7 @@ namespace database_monitoring
             services.AddControllers().AddNewtonsoftJson(s => {
                 s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
+            services.AddSwaggerGen();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             //services.AddScoped<IDatabaseServerRepo, MockDatabaseServerRepo>();
             services.AddScoped<IDatabaseServerRepo, SqlDatabaseServerRepo>();
@@ -47,6 +48,12 @@ namespace database_monitoring
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI( c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Database Monitoring API v1");
+            });
 
             app.UseRouting();
 

@@ -5,12 +5,12 @@ using database_monitoring.Data;
 using AutoMapper;
 using database_monitoring.Models;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using database_monitoring.Dtos;
 using Microsoft.AspNetCore.JsonPatch;
-using Xunit.Abstractions;
+using Moq;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace database_monitoring.tests
 {
@@ -137,6 +137,13 @@ namespace database_monitoring.tests
             // Arrange
             var mapper = config.CreateMapper();
             var controller = new DatabaseServersController(repo, mapper);
+            var objectValidator = new Mock<IObjectModelValidator>();
+            objectValidator.Setup(x => x.Validate(It.IsAny<ActionContext>(),
+                It.IsAny<ValidationStateDictionary>(),
+                It.IsAny<string>(),
+                It.IsAny<object>()
+            ));
+            controller.ObjectValidator = objectValidator.Object;
             var PatchDoc = new JsonPatchDocument<DatabaseServerUpdateDto>();
             PatchDoc.Operations.Add(new Microsoft.AspNetCore.JsonPatch.Operations.Operation<DatabaseServerUpdateDto>("replace", "/serverName", null, "servanalisis"));
             // Act
@@ -155,8 +162,8 @@ namespace database_monitoring.tests
             var mapper = config.CreateMapper();
             var controller = new DatabaseServersController(repo, mapper);
             // Act
-            //controller.DeleteDatabaseServer(1);
-            var actionResult = controller.GetDatabaseServerById(10);
+            controller.DeleteDatabaseServer(1);
+            var actionResult = controller.GetDatabaseServerById(1);
             // Asses
             var result = actionResult.Result as NotFoundResult;
             Assert.Equal(404, result.StatusCode);
